@@ -1,0 +1,14 @@
+#!/bin/bash
+
+nc=/usr/bin/nc
+
+hostport="${http_proxy#http://}"
+if [ x"${http_proxy}" = x"${hostport}" ]; then
+    echo "please set \$http_prpxy with http://host:port/ form" 1>&2
+    exit 1
+fi
+hostport="${hostport%/}"
+
+host="${hostport%:*}"
+port="${hostport#*:}"
+exec "${nc}" -X connect "${host}" "${port}"
